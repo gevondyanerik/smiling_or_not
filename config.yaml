@@ -6,7 +6,8 @@ train_images: 'path'
 val_images: 'path'
 test_images: 'path'
 
-lr: 0.000001
+epochs: 100
+learning_rate: 0.0001
 weight_decay: 0.0001
 image_size: 224
 train_batch: 32

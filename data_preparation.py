@@ -9,18 +9,20 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 
 from sklearn.utils import shuffle
-from read_config import cfg
+from helper_scripts.read_config import cfg
 
 
 train_transformations = transforms.Compose([
         transforms.Resize((cfg['image_size'], cfg['image_size'])),
         transforms.AutoAugment(transforms.AutoAugmentPolicy.IMAGENET),
+        transforms.Normalize((...), (...)),     # get_mean_std.py
         transforms.ToTensor(),
     ])
 
 
 test_transformations = transforms.Compose([
         transforms.Resize((cfg['image_size'], cfg['image_size'])),
+        transforms.Normalize((...), (...)),
         transforms.ToTensor(),
     ])
 
@@ -37,8 +39,8 @@ class GetDataset(Dataset):
         return len(self.data_csv)
 
     def __getitem__(self, index):
-
         image = Image.open(os.path.join(self.root, self.data_csv.iloc[index, 0]))
+
         if image.mode != 'RGB':
             image = image.convert('RGB')
 
