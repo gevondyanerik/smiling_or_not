@@ -22,7 +22,7 @@ train_transformations = transforms.Compose([
 
 test_transformations = transforms.Compose([
         transforms.Resize((cfg['image_size'], cfg['image_size'])),
-        transforms.Normalize((...), (...)),
+        transforms.Normalize((...), (...)),     # get_mean_std.py
         transforms.ToTensor(),
     ])
 

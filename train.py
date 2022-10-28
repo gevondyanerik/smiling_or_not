@@ -126,6 +126,37 @@ def val_step(val_loader, model, loss_function):
     return (accuracy, mean_loss)
 
 
+class EarlyStopping():
+    '''Returns True if no improvement after a given number of epochs in a row.
+    
+       counter[int]: current number of no improvement epochs,
+       threshold[int]: max number of no improvement epochs,
+       delta[float]: difference less than delta means 'no imrovement',
+       previous_loss[float]: loss of a previous epoch.'''
+
+    def __init__(self, counter=0, threshold=10, delta=0., previous_loss=0.):
+        self.counter = counter
+        self.threshold = threshold
+        self.delta = delta
+        self.previous_loss = previous_loss
+
+    def __call__(self, loss):
+
+        if loss - self.previous_loss >= self.delta:
+            self.counter += 1
+
+            if self.counter >= self.threshold:
+                return True
+
+        else:
+            self.counter = 0
+
+        self.previous_loss = loss
+
+
+early_stopping = EarlyStopping()
+
+
 def save_checkpoint(state, epoch, val_accuracy, val_loss, folder=cfg['checkpoints_folder']):
     '''Saves model into cfg checkpoints folder'''
 
@@ -133,7 +164,7 @@ def save_checkpoint(state, epoch, val_accuracy, val_loss, folder=cfg['checkpoint
     torch.save(state, f'{folder}/checkpoint|ep_{epoch}|acc_{str(val_accuracy)[:5]}|loss_{str(val_loss)[:5]}.pth.tar')
 
 
-start_epoch = 0
+start_epoch = 0     # allows to track how many epochs a model has trained when training saved checkpoints
 best_accuracy = 0
 
 train_acc_per_epoch = []
@@ -161,38 +192,43 @@ if cfg['load_checkpoint']:     # if cfg load_checkpoint is True, the model from 
     val_loss_per_epoch = checkpoint['val_loss_per_epoch']
 
 
+if __name__ == "__main__":
 
-for epoch in range(start_epoch, cfg['epochs'] + start_epoch):
     '''Runs train_loop and val_loop in turn, appending accuracy and loss into the lists above.
-       If cfg save_checkpoints is True, each model that has more accuracy
-       than all of previous, will be saved into the cfg checkpoints_folder'''
+    If cfg save_checkpoints is True, each model that has more accuracy
+    than all of previous, will be saved into the cfg checkpoints_folder'''
 
-    print(f'\nEPOCH|{epoch + 1}/{cfg['epochs'] + start_epoch}|')
+    for epoch in range(start_epoch, cfg['epochs'] + start_epoch):
 
-    train_accuracy, train_loss = train_step(train_loader, model, optimizer, loss_function)
-    val_accuracy, val_loss = val_step(val_loader, model, loss_function)
+        print(f'\nEPOCH |{epoch + 1}/{cfg["epochs"] + start_epoch}|')
 
-    train_acc_per_epoch.append(train_accuracy)
-    val_acc_per_epoch.append(val_accuracy)
+        train_accuracy, train_loss = train_step(train_loader, model, optimizer, loss_function)
+        val_accuracy, val_loss = val_step(val_loader, model, loss_function)
 
-    train_loss_per_epoch.append(train_loss)
-    val_loss_per_epoch.append(val_loss)
+        train_acc_per_epoch.append(train_accuracy)
+        val_acc_per_epoch.append(val_accuracy)
 
-    if cfg['save_checkpoints'] and val_accuracy > best_accuracy:
-        best_accuracy = val_accuracy
+        train_loss_per_epoch.append(train_loss)
+        val_loss_per_epoch.append(val_loss)
 
-        tmp_dict = {
-            'state_dict': model.state_dict(),
-            'optimizer': optimizer.state_dict(),
-            'epoch': epoch,
-            'train_acc_per_epoch': train_acc_per_epoch,
-            'val_acc_per_epoch': val_acc_per_epoch,
-            'train_loss_per_epoch': train_loss_per_epoch,
-            'val_loss_per_epoch': val_loss_per_epoch,
-            'train_accuracy': train_accuracy,
-            'val_accuracy': val_accuracy,
-            'train_loss': train_loss,
-            'val_loss': val_loss,
-        }
+        if cfg['save_checkpoints'] and val_accuracy > best_accuracy:
+            best_accuracy = val_accuracy
 
-        save_checkpoint(tmp_dict, epoch, val_accuracy, val_loss)
+            tmp_dict = {
+                'state_dict': model.state_dict(),
+                'optimizer': optimizer.state_dict(),
+                'epoch': epoch,
+                'train_acc_per_epoch': train_acc_per_epoch,
+                'val_acc_per_epoch': val_acc_per_epoch,
+                'train_loss_per_epoch': train_loss_per_epoch,
+                'val_loss_per_epoch': val_loss_per_epoch,
+                'train_accuracy': train_accuracy,
+                'val_accuracy': val_accuracy,
+                'train_loss': train_loss,
+                'val_loss': val_loss,
+            }
+
+            save_checkpoint(tmp_dict, epoch, val_accuracy, val_loss)
+        
+        if early_stopping(val_loss):
+            break
