@@ -16,7 +16,8 @@ warnings.filterwarnings('ignore')
 
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-print(f'Training on {device}')
+if __name__ == '__main__':
+    print(f'Training on {device}')
 
 model = resnet50(weights=ResNet50_Weights.DEFAULT)
 in_features = model.fc.in_features
@@ -121,7 +122,7 @@ def val_step(val_loader, model, loss_function):
         val_loop.set_postfix(loss=mean_loss) 
       
     accuracy = correct / total * 100
-    print(f'VAL | ACCURACY: {accuracy} | LOSS: {mean_loss}')
+    print(f'VAL   | ACCURACY: {accuracy} | LOSS: {mean_loss}')
 
     return (accuracy, mean_loss)
 
@@ -131,10 +132,10 @@ class EarlyStopping():
     
        counter[int]: current number of no improvement epochs,
        threshold[int]: max number of no improvement epochs,
-       delta[float]: difference less than delta means 'no imrovement',
+       delta[float]: loss minus previous_loss less than delta means 'no imrovement',
        previous_loss[float]: loss of a previous epoch.'''
 
-    def __init__(self, counter=0, threshold=10, delta=0., previous_loss=0.):
+    def __init__(self, counter=0, threshold=10, delta=0., previous_loss=1.):
         self.counter = counter
         self.threshold = threshold
         self.delta = delta
@@ -142,16 +143,18 @@ class EarlyStopping():
 
     def __call__(self, loss):
 
-        if loss - self.previous_loss >= self.delta:
+        if self.previous_loss - loss <= self.delta:
             self.counter += 1
 
             if self.counter >= self.threshold:
+                print('\nEarly stop...')
                 return True
 
         else:
             self.counter = 0
 
         self.previous_loss = loss
+        print(f'Current early stop counter: {self.counter}/{self.threshold}')
 
 
 early_stopping = EarlyStopping()
@@ -161,7 +164,7 @@ def save_checkpoint(state, epoch, val_accuracy, val_loss, folder=cfg['checkpoint
     '''Saves model into cfg checkpoints folder'''
 
     print('\nSaving model...')
-    torch.save(state, f'{folder}/checkpoint|ep_{epoch}|acc_{str(val_accuracy)[:5]}|loss_{str(val_loss)[:5]}.pth.tar')
+    torch.save(state, f'{folder}\checkpoint_ep-{epoch + 1}_acc-{str(val_accuracy)[:5]}_loss-{str(val_loss)[:5]}.pth.tar')
 
 
 start_epoch = 0     # allows to track how many epochs a model has trained when training saved checkpoints

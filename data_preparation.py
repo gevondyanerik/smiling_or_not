@@ -15,14 +15,14 @@ from helper_scripts.read_config import cfg
 train_transformations = transforms.Compose([
         transforms.Resize((cfg['image_size'], cfg['image_size'])),
         transforms.AutoAugment(transforms.AutoAugmentPolicy.IMAGENET),
-        transforms.Normalize((...), (...)),     # get_mean_std.py
+        transforms.Normalize((cfg['mean']), (cfg['std'])),     # get_mean_std.py
         transforms.ToTensor(),
     ])
 
 
 test_transformations = transforms.Compose([
         transforms.Resize((cfg['image_size'], cfg['image_size'])),
-        transforms.Normalize((...), (...)),     # get_mean_std.py
+        transforms.Normalize((cfg['mean']), (cfg['std'])),     # get_mean_std.py
         transforms.ToTensor(),
     ])
 

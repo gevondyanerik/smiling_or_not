@@ -6,9 +6,11 @@ from torchvision import transforms
 from torch.utils.data import DataLoader
 
 
-train_data_path = ''
+train_images_path = ''
+
+# input format:
 # /root:
-#    /data:
+#    /train_images:
 #       /class1
 #       /class2
 
@@ -19,7 +21,7 @@ transformations = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-dataset = torchvision.datasets.ImageFolder(root=train_data_path, transform=transformations)
+dataset = torchvision.datasets.ImageFolder(root=train_images_path, transform=transformations)
 data_loader = DataLoader(dataset=dataset, batch_size=64, shuffle=True)
 
 

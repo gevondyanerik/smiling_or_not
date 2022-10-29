@@ -1,12 +1,12 @@
-train_csv: 'path'
-val_csv: 'path'
-test_csv: 'path'
+train_csv: 'dataset\train_csv.csv'
+val_csv: 'dataset\val_csv.csv'
+test_csv: 'dataset\test_csv.csv'
 
-train_images: 'path'
-val_images: 'path'
-test_images: 'path'
+train_images: 'dataset\train_images'
+val_images: 'dataset\val_images'
+test_images: 'dataset\test_images'
 
-epochs: 100
+epochs: 50
 learning_rate: 0.0001
 weight_decay: 0.0001
 image_size: 224
@@ -14,8 +14,11 @@ train_batch: 32
 test_batch: 128
 
 
-checkpoints_folder: 'path'
+checkpoints_folder: 'checkpoints'
 save_checkpoints: True     # if True saves a model(.pth.tar) into the checkponts_folder if its accuracy more than all of previous epochs
 
-load_checkpoint_path: 'path'
+load_checkpoint_path: 'checkpoints\some_checkpoint.pth.tar'
 load_checkpoint: False     # if True loads a model weights from the load_checkpoint_path
+
+mean: [0.5079, 0.4671, 0.4429]
+std: [0.2924, 0.2688, 0.2716]

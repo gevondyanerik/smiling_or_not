@@ -1,15 +1,16 @@
 '''Testing all checkpoints from the cfg checkpoints_folder on the third data split'''
 
 import os
-from helper_scripts.read_config import cfg
-from train import get_round, loss_function, optimizer
-from data_preparation import test_loader
 from tqdm import tqdm
 from itertools import chain
 
 import torch
 import torch.nn as nn
 from torchvision.models import resnet50, ResNet50_Weights
+
+from helper_scripts.read_config import cfg
+from train import get_round, loss_function, optimizer
+from data_preparation import test_loader
 
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -22,6 +23,7 @@ model.to(device)
 
 train_accuracy = None
 val_accuracy = None
+
 
 def load_model(checkpoint_name):
 
@@ -39,7 +41,7 @@ def load_model(checkpoint_name):
     val_accuracy = checkpoint['val_accuracy']
 
 
-def test_step(test_loader, model, loss_function, train_acc, val_acc):
+def test_step(test_loader, model, loss_function, checkpoint):
     model.eval()
 
     epoch_loss = 0.
@@ -71,11 +73,12 @@ def test_step(test_loader, model, loss_function, train_acc, val_acc):
         test_loop.set_postfix(loss=mean_loss) 
     
     accuracy = correct / total * 100
-    print(f'TRAIN ACC: {str(train_acc)[:5]}] | VAL ACC: {str(val_acc)[:5]}] | TEST ACC: {str(accuracy)[:5]}')
+    print(checkpoint[:-8])
+    print(f'TEST | ACCURACY: {str(accuracy)[:5]} | LOSS: {str(mean_loss)[:5]}')
 
 
 checkpoints = os.listdir(cfg['checkpoints_folder'])
 
 for checkpoint in checkpoints:
   load_model(checkpoint)
-  test_step(test_loader, model, loss_function, train_accuracy, val_accuracy)
+  test_step(test_loader, model, loss_function, checkpoint)
