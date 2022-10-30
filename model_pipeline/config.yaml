@@ -6,12 +6,13 @@ train_images: 'dataset\train_images'
 val_images: 'dataset\val_images'
 test_images: 'dataset\test_images'
 
-epochs: 50
-learning_rate: 0.1
-weight_decay: 0.0001
-image_size: 256
+epochs: 1
 train_batch: 32
 test_batch: 128
+image_size: 256
+
+learning_rate: 0.1
+weight_decay: 0.0001
 
 scheduler_patience: 2
 scheduler_threshold: 0.001
