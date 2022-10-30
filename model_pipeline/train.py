@@ -26,7 +26,7 @@ model.to(device)
 
 loss_function = nn.BCEWithLogitsLoss()
 optimizer = optim.Adam(model.fc.parameters(), lr=cfg['learning_rate'], weight_decay=cfg['weight_decay'])
-scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=5)
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=cfg['scheduler_patience'], threshold=cfg['scheduler_threshold'], verbose=True)
 
 
 def get_round(number):
@@ -131,13 +131,13 @@ class EarlyStopping():
     '''Returns True if no improvement after a given number of epochs in a row.
     
        counter[int]: current number of no improvement epochs,
-       threshold[int]: max number of no improvement epochs,
+       patience[int]: max number of no improvement epochs,
        delta[float]: loss minus previous_loss less than delta means 'no imrovement',
        previous_loss[float]: loss of a previous epoch.'''
 
-    def __init__(self, counter=0, threshold=10, delta=0., previous_loss=1.):
+    def __init__(self, counter=0, patience=cfg['es_patience'], delta=cfg['es_delta'], previous_loss=1.):
         self.counter = counter
-        self.threshold = threshold
+        self.patience = patience
         self.delta = delta
         self.previous_loss = previous_loss
 
@@ -146,7 +146,7 @@ class EarlyStopping():
         if self.previous_loss - loss <= self.delta:
             self.counter += 1
 
-            if self.counter >= self.threshold:
+            if self.counter >= self.patience:
                 print('\nEarly stop...')
                 return True
 
@@ -154,7 +154,7 @@ class EarlyStopping():
             self.counter = 0
 
         self.previous_loss = loss
-        print(f'Current early stop counter: {self.counter}/{self.threshold}')
+        print(f'Current early stop counter: {self.counter}/{self.patience}')
 
 
 early_stopping = EarlyStopping()

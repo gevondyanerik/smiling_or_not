@@ -7,12 +7,17 @@ val_images: 'dataset\val_images'
 test_images: 'dataset\test_images'
 
 epochs: 50
-learning_rate: 0.0001
+learning_rate: 0.1
 weight_decay: 0.0001
-image_size: 224
+image_size: 256
 train_batch: 32
 test_batch: 128
 
+scheduler_patience: 2
+scheduler_threshold: 0.001
+
+es_patience: 6
+es_delta: 0.
 
 checkpoints_folder: 'checkpoints'
 save_checkpoints: True     # if True saves a model(.pth.tar) into the checkponts_folder if its accuracy more than all of previous epochs
@@ -20,5 +25,5 @@ save_checkpoints: True     # if True saves a model(.pth.tar) into the checkponts
 load_checkpoint_path: 'checkpoints\some_checkpoint.pth.tar'
 load_checkpoint: False     # if True loads a model weights from the load_checkpoint_path
 
-mean: [0.5079, 0.4671, 0.4429]
+mean: [0.5079, 0.4671, 0.4429]     # for normalization(get_mean_std.py)
 std: [0.2924, 0.2688, 0.2716]

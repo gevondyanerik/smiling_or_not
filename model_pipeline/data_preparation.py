@@ -15,15 +15,15 @@ from helper_scripts.read_config import cfg
 train_transformations = transforms.Compose([
         transforms.Resize((cfg['image_size'], cfg['image_size'])),
         transforms.AutoAugment(transforms.AutoAugmentPolicy.IMAGENET),
-        transforms.Normalize((cfg['mean']), (cfg['std'])),     # get_mean_std.py
         transforms.ToTensor(),
+        transforms.Normalize((cfg['mean']), (cfg['std'])),     # get_mean_std.py
     ])
 
 
-test_transformations = transforms.Compose([
+val_test_transformations = transforms.Compose([
         transforms.Resize((cfg['image_size'], cfg['image_size'])),
-        transforms.Normalize((cfg['mean']), (cfg['std'])),     # get_mean_std.py
         transforms.ToTensor(),
+        transforms.Normalize((cfg['mean']), (cfg['std'])),     # get_mean_std.py
     ])
 
 
@@ -51,8 +51,8 @@ class GetDataset(Dataset):
 
 
 train_dataset = GetDataset(cfg['train_csv'], cfg['train_images'], train_transformations)
-val_dataset = GetDataset(cfg['val_csv'], cfg['val_images'], train_transformations)
-test_dataset = GetDataset(cfg['test_csv'], cfg['test_images'], test_transformations)
+val_dataset = GetDataset(cfg['val_csv'], cfg['val_images'], val_test_transformations)
+test_dataset = GetDataset(cfg['test_csv'], cfg['test_images'], val_test_transformations)
 
 
 train_loader = DataLoader(train_dataset, shuffle=True, batch_size=cfg['train_batch'])

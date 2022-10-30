@@ -1,4 +1,5 @@
-/__pycache__
-/dataset/__pycache__
-/dataset
-/checkpoints
+/model_pipeline/.model_pipeline
+/model_pipeline/dataset
+/model_pipeline/checkpoints
+
+/app/.app
