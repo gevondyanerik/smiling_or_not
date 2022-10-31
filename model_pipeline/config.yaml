@@ -26,5 +26,5 @@ save_checkpoints: True     # if True saves a model(.pth.tar) into the checkponts
 load_checkpoint_path: 'checkpoints\some_checkpoint.pth.tar'
 load_checkpoint: False     # if True loads a model weights from the load_checkpoint_path
 
-mean: [0.5079, 0.4671, 0.4429]     # for normalization(get_mean_std.py)
+mean: [0.5079, 0.4671, 0.4429]     # for normalization(helper_scripts/get_mean_std.py)
 std: [0.2924, 0.2688, 0.2716]

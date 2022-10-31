@@ -5,3 +5,4 @@
 
 /app/.venv
 /app/__pycache__
+/app/model_statement.pth.tar
