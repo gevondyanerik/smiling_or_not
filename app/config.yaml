@@ -1,0 +1,6 @@
+model_statement: 'model_statement.pth.tar'
+
+image_size: 256
+
+mean: [0.5079, 0.4671, 0.4429]     # for normalization(model_pipeline/helper_scripts/get_mean_std.py)
+std: [0.2924, 0.2688, 0.2716]
