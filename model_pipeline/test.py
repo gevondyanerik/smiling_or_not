@@ -1,4 +1,4 @@
-'''Testing all checkpoints from the cfg checkpoints_folder on the third data split'''
+'''Testing pipeline'''
 
 import os
 from tqdm import tqdm
