@@ -1,7 +1,7 @@
-/model_pipeline/.venv
-/model_pipeline/__pycache__
-/model_pipeline/dataset
-/model_pipeline/checkpoints
+/model/.venv
+/model/__pycache__
+/model/dataset
+/model/checkpoints
 
 /app/.venv
 /app/__pycache__

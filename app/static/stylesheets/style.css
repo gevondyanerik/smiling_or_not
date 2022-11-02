@@ -1,0 +1,28 @@
+body {
+    background: rgb(19, 18, 18);
+    font-size: 29px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, Helvetica, sans-serif, Times, serif, 'Arial Narrow', Arial, sans-serif, 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif, Tahoma, Geneva, Verdana, sans-serif, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 5%;
+    margin-inline-end: 40%;
+}
+
+h1 {
+    color: whitesmoke;
+    font-size: 34px;
+}
+
+h2 {
+    color: whitesmoke;
+    font-size: 25px;
+}
+
+input {
+    color: purple;
+}
+
+img {
+    cursor: grab;
+    width: 300px;
+    border-radius: 40%;
+    box-shadow: 4px 4px 14px purple;
+}

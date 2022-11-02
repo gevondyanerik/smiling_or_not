@@ -1,16 +1,20 @@
-<!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Some title</title>
-        <link rel="stylesheet" href="npm i bootstrap@5.2.2" crossorigin="anonymous">
+        <meta charset="UTF-8">
+        <title>Smiling or not</title>
+        <link href="static/stylesheets/style.css" rel="stylesheet"/>
     </head>
-
     <body>
-        <h1 class="text-center">Some shit</h1>
-
-        <form class="p-3 text-center" action="/", method="post" enctype="multipart/form-data" >
-            <input class="form-control" type="file" name="imagefile" >
-            <input class="btn btn-primary mt-3" type="submit" value="Predict Image" >
+        <h1>Smiling or unsmiling classification - <a href="" target="_blank">github</a>.</h1>
+        <hr>
+        <h2>Upload your image and get prediction.</h2>
+        <form action="/", method="post" enctype="multipart/form-data">
+            <input type="file" name="imagefile">
+            <input type="submit">
+        <br>
+        <h2>Prediction: {{predict}}</h2>
         </form>
+        <hr>
+        <img src="static/gif.gif">
     </body>
 </html>
