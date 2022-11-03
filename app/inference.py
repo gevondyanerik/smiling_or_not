@@ -1,4 +1,4 @@
-'''This script takes only one image and returns prediction(Smiling/Unsmiling)'''
+'''This script takes only one image and returns prediction(smiling/unsmiling)'''
 
 import torch
 import torch.nn as nn
@@ -21,7 +21,7 @@ model.load_state_dict(model_statement['state_dict'])
 transformations = transforms.Compose([
   transforms.Resize((256, 256)),
   transforms.ToTensor(),
-  transforms.Normalize(torch.Tensor([0.5079, 0.4671, 0.4429] ), torch.Tensor([0.2924, 0.2688, 0.2716])),
+  transforms.Normalize(torch.Tensor([0.5079, 0.4671, 0.4429]), torch.Tensor([0.2924, 0.2688, 0.2716])),
 ])
 
 
@@ -35,13 +35,13 @@ def get_predict(image):
 
     image = transformations(image).float()
     image = image.unsqueeze(0) 
-    
+
     image.to(device)
 
     prediction = model(image)
     prediction = list(chain(*prediction.tolist()))[0]
 
-    return 'smiling' if prediction else 'unsmiling'
+    return 'smiling' if prediction > 0 else 'unsmiling'     # prediction threshold is 0
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 from torchvision.models import resnet50, ResNet50_Weights
 
-from helper_scripts.read_config import cfg
+from read_config import cfg
 from train import get_round, loss_function, optimizer
 from data_preparation import test_loader
 
@@ -24,21 +24,33 @@ model.to(device)
 train_accuracy = None
 val_accuracy = None
 
+train_loss = None
+val_loss = None
 
-def load_model(checkpoint_name):
+
+def load_model(checkpoint_name, checkpoints_folder=cfg['checkpoints_folder']):
+    '''Loads model statement into the resnet.'''
 
     print('\nLoading checkpoint...\n')
-    checkpoint = torch.load(f'{cfg["checkpoints_folder"]}/{checkpoint_name}', map_location=device)
+    checkpoint = torch.load(f'{checkpoints_folder}/{checkpoint_name}', map_location=device)
 
     global model
     global optimizer
+
     global train_accuracy
     global val_accuracy
 
+    global train_loss
+    global val_loss
+
     model.load_state_dict(checkpoint['state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer'])
+
     train_accuracy = checkpoint['train_accuracy']
     val_accuracy = checkpoint['val_accuracy']
+
+    train_loss = checkpoint['train_loss']
+    val_loss = checkpoint['val_loss']
 
 
 def test_step(test_loader, model, loss_function, checkpoint):

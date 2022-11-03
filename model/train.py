@@ -8,7 +8,7 @@ from data_preparation import train_loader, val_loader
 
 from tqdm import tqdm
 from itertools import chain
-from helper_scripts.read_config import cfg
+from read_config import cfg
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -52,7 +52,7 @@ def train_step(train_loader, model, optimizer, loss_function):
         labels = labels.unsqueeze(1)
         labels = labels.to(torch.float32)
         labels = labels.to(device)
-        
+
         # forward
         optimizer.zero_grad()
         predictions = model(images)
@@ -61,7 +61,7 @@ def train_step(train_loader, model, optimizer, loss_function):
         # backward
         loss.backward()
         optimizer.step()
-        
+
         # evaluation
         epoch_loss += loss.item()
         mean_loss = epoch_loss / len(train_loader)
@@ -119,7 +119,7 @@ def val_step(val_loader, model, loss_function):
         total += len(labels)
 
         val_loop.set_postfix(loss=mean_loss) 
-      
+
     accuracy = correct / total * 100
     print(f'VAL   | ACCURACY: {accuracy} | LOSS: {mean_loss}')
 
@@ -128,7 +128,7 @@ def val_step(val_loader, model, loss_function):
 
 class EarlyStopping():
     '''Returns True if no improvement after a given number of epochs in a row.
-    
+
        counter[int]: current number of no improvement epochs,
        patience[int]: max number of no improvement epochs,
        delta[float]: loss minus previous_loss less than delta means 'no imrovement',
@@ -231,6 +231,6 @@ if __name__ == "__main__":
             }
 
             save_checkpoint(tmp_dict, epoch, val_accuracy, val_loss)
-        
+
         if early_stopping(val_loss):
             break

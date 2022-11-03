@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 
 from sklearn.utils import shuffle
-from helper_scripts.read_config import cfg
+from read_config import cfg
 
 
 train_transformations = transforms.Compose([
