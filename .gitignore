@@ -1,8 +1,5 @@
-/model/.venv
-/model/__pycache__
-/model/dataset
-/model/checkpoints
-
-/app/.venv
-/app/__pycache__
-/app/model_statement.pth.tar
+.venv
+__pycache__
+dataset
+checkpoints
+model_statement.pth.tar
