@@ -25,10 +25,11 @@ transformations = transforms.Compose([
 ])
 
 
-def get_predict(image):
-    '''Returns prediction(smiling/unsmiling).'''
+def get_predict(path=None, image=None):
+    '''Takes path(for local inference) or PIL image(for app.py) and returns prediction(smiling/unsmiling).'''
 
-    image = Image.open(image)
+    if path:
+        image = Image.open(path)
 
     if image.mode != 'RGB':
         image = image.convert('RGB')
@@ -45,4 +46,4 @@ def get_predict(image):
 
 
 if __name__ == '__main__':
-    print(get_predict(input('Enter path to a image: ')))
+    print(get_predict(path=input('Enter path to a image: ')))

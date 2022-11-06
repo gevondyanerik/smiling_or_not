@@ -1,6 +1,7 @@
 from inference import get_predict
 import os
 from flask import Flask, render_template, request
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -16,12 +17,10 @@ def prediction():
 
     if not imagefile.filename.endswith(('.jpg', '.png', '.jpeg')):
         return render_template('index.html', predict='Input must be jpg/png/jpeg file!')
+    
+    image = Image.open(imagefile.stream)
 
-    imagefile.save(imagefile.filename)
-
-    predict = get_predict(imagefile.filename)
-
-    os.remove(imagefile.filename)
+    predict = get_predict(image=image)
 
     return render_template('index.html', predict=predict)
 
