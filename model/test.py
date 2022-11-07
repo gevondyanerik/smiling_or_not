@@ -21,12 +21,6 @@ in_features = model.fc.in_features
 model.fc = nn.Linear(in_features, 1)
 model.to(device)
 
-train_accuracy = None
-val_accuracy = None
-
-train_loss = None
-val_loss = None
-
 
 def load_model(checkpoint_name, checkpoints_folder=cfg['checkpoints_folder']):
     '''Loads model statement into the resnet.'''
@@ -37,20 +31,8 @@ def load_model(checkpoint_name, checkpoints_folder=cfg['checkpoints_folder']):
     global model
     global optimizer
 
-    global train_accuracy
-    global val_accuracy
-
-    global train_loss
-    global val_loss
-
     model.load_state_dict(checkpoint['state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer'])
-
-    train_accuracy = checkpoint['train_accuracy']
-    val_accuracy = checkpoint['val_accuracy']
-
-    train_loss = checkpoint['train_loss']
-    val_loss = checkpoint['val_loss']
 
 
 def test_step(test_loader, model, loss_function, checkpoint):
