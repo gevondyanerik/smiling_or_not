@@ -6,7 +6,7 @@ from itertools import chain
 
 import torch
 import torch.nn as nn
-from torchvision.models import resnet50, ResNet50_Weights
+from torchvision.models import resnet50
 
 from read_config import cfg
 from train import get_round, loss_function, optimizer
@@ -16,7 +16,7 @@ from data_preparation import test_loader
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f'Testing on {device}')
 
-model = resnet50(weights=ResNet50_Weights.DEFAULT)
+model = resnet50(weights=None)
 in_features = model.fc.in_features
 model.fc = nn.Linear(in_features, 1)
 model.to(device)
