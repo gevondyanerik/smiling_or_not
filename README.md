@@ -5,7 +5,7 @@ But this seemed to me insufficient, so I found another dataset in addition to th
 <br />
 <br />
 # Model
-Pre-trained on [ImageNet](https://arxiv.org/pdf/1409.0575.pdf) [Resnet-50](https://arxiv.org/pdf/1512.03385.pdf).
+[Resnet-50](https://arxiv.org/pdf/1512.03385.pdf) pre-trained on [ImageNet](https://arxiv.org/pdf/1409.0575.pdf).
 
 |        | TRAIN |  VAL  | TEST  |
 |-------:|------:| -----:|------:|
